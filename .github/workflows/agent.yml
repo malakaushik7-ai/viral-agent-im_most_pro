@@ -1,7 +1,7 @@
 name: 24-7 AI Agent for @im_most_pro
 on:
   schedule:
-    - cron: '0 */3 *' # Every 3 hours
+  - cron: '0 */3 * * *' # Every 3 hours
   workflow_dispatch: # Manual run button
 
 jobs:
