@@ -1,6 +1,6 @@
     google-generativeai
 google-api-python-client==2.149.0
-supabase==2.11.1
+supabase
 ffmpeg-python==0.2.0
 python-dotenv==1.0.1
 requests==2.32.3
