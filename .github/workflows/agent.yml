@@ -1,22 +1,39 @@
-name: 24-7 AI Agent for @im_most_pro
+name: Anime Video Bot
+
 on:
   schedule:
-  - cron: '0 */3 * * *' # Every 3 hours
-  workflow_dispatch: # Manual run button
+    - cron: '0 */3 * * *'  # har 3 ghante
+  workflow_dispatch:  # manual run ke liye
 
 jobs:
-  run-agent:
+  generate_video:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
           python-version: '3.10'
-      - run: pip install -r requirements.txt
-      - run: python agent/agent.py
+      - name: Install deps
+        run: pip install -r requirements.txt
+      - name: Generate Anime Video
+        run: python agent.py
+      - name: Upload Video Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: anime-video
+          path: outputs/
+
+  upload_youtube:
+    needs: generate_video
+    runs-on: ubuntu-latest
+    environment: approval  # <-- Yahi approve wala button laayega
+    steps:
+      - name: Download Video
+        uses: actions/download-artifact@v4
+        with:
+          name: anime-video
+      - name: Upload to YouTube
+        run: python upload_youtube.py
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-          CHANNEL_NAME: ${{ vars.CHANNEL_NAME }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
