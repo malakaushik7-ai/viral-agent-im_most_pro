@@ -1,14 +1,18 @@
-import os
-from dotenv import load_dotenv
-load_dotenv()
+from song_finder import download_trending_song
+from beat_sync import get_beat_points
 
-CHANNEL_NAME = os.getenv("CHANNEL_NAME", "@im_most_pro")
-EDITS_PER_RUN = 5
-NO_AI_CLIPS = True
+class ViralAgent:
+    def __init__(self):
+        pass
 
-def main():
-    print(f"✅ Agent started for {CHANNEL_NAME}")
-    print(f"Making {EDITS_PER_RUN} edits with watermark only")
+    def run(self, prompt):
+        print(f"[VIRAL AGENT] Prompt: {prompt}")
 
-if __name__ == "__main__": 
-    main()
+        # Step 1: Song dhundo
+        song = download_trending_song(prompt)
+
+        # Step 2: Beat nikalo
+        beats = get_beat_points(song["path"])
+
+        # Step 3: Agla step yahi se call hoga
+        return {"song": song, "beats": beats, "status": "Ready for Mix Edit"}
